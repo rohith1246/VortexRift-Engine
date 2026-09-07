@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>VortexRift Engine - 2.5D Isometric Simulation & Netcode Visualizer</title>
+  <style>
+    body { margin: 0; background: #0b0f19; color: #e2e8f0; font-family: 'Segoe UI', monospace; overflow: hidden; }
+    #header { padding: 12px 24px; background: #111827; border-bottom: 1px solid #1f2937; display: flex; justify-content: space-between; align-items: center; }
+    h1 { margin: 0; font-size: 18px; color: #a78bfa; }
+    .badge { background: #312e81; color: #c7d2fe; padding: 4px 10px; border-radius: 4px; font-size: 12px; }
+    #canvas { display: block; width: 100vw; height: calc(100vh - 60px); }
+  </style>
+</head>
+<body>
+  <div id="header">
+    <h1>⚔️ VortexRift Engine: 2.5D Isometric Action-RPG & Netcode Dashboard</h1>
+    <div>
+      <span class="badge">60 FPS Tick</span>
+      <span class="badge">Rollback Netcode Active</span>
+      <span class="badge">64-bit ECS Bitmask</span>
+    </div>
+  </div>
+  <canvas id="canvas"></canvas>
+  <script>
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight - 60;
+
+    let tick = 0;
+    const entities = Array.from({ length: 45 }, (_, i) => ({
+      x: 300 + Math.random() * (canvas.width - 600),
+      y: 150 + Math.random() * (canvas.height - 300),
+      vx: (Math.random() - 0.5) * 3,
+      vy: (Math.random() - 0.5) * 3,
+      school: ['#f87171', '#60a5fa', '#34d399', '#a78bfa', '#fbbf24'][i % 5]
+    }));
+
+    function render() {
+      tick++;
+      ctx.fillStyle = '#0b0f19';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw Isometric Grid Lines
+      ctx.strokeStyle = '#1e293b';
+      ctx.lineWidth = 1;
+      for (let i = -canvas.width; i < canvas.width * 2; i += 60) {
+        ctx.beginPath();
+        ctx.moveTo(i + (tick % 60), 0);
+        ctx.lineTo(i + canvas.height + (tick % 60), canvas.height);
+        ctx.stroke();
+      }
+
+      // Draw Entities & Combat Trajectories
+      entities.forEach(e => {
+        e.x += e.vx; e.y += e.vy;
+        if (e.x < 50 || e.x > canvas.width - 50) e.vx *= -1;
+        if (e.y < 50 || e.y > canvas.height - 50) e.vy *= -1;
+
+        ctx.fillStyle = e.school;
+        ctx.shadowColor = e.school;
+        ctx.shadowBlur = 12;
+        ctx.beginPath();
+        ctx.arc(e.x, e.y, 8, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      });
+
+      requestAnimationFrame(render);
+    }
+    render();
+  </script>
+</body>
+</html>
