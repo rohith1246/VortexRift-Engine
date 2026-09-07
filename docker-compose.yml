@@ -1,0 +1,8 @@
+version: '3.8'
+services:
+  vortexrift-engine:
+    build: .
+    container_name: vortexrift-engine_app
+    ports:
+      - "3500:3500"
+    restart: always

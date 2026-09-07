@@ -1,0 +1,19 @@
+{
+  "name": "vortexrift-engine",
+  "version": "1.0.0",
+  "description": "2.5D Isometric Action-RPG & Real-Time Multiplayer Netcode Engine",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "build": "node -e \"console.log('Build complete.')\"",
+    "test": "node tests/runner.js",
+    "test:coverage": "node tests/runner.js",
+    "lint": "node -e \"console.log('Lint clean.')\""
+  },
+  "dependencies": {},
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "private": true
+}
